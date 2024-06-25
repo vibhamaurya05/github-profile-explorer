@@ -4,8 +4,9 @@ const GitHubUser = () => {
   const [username, setUsername] = useState("");
   const [userData, setUserData] = useState(null);
   const [userRepos, setUserRepos] = useState([]);
+  const [liveLink, setLiveLink] = useState([])
   const [fetchUsermsg, setFetchUsermsg] = useState(false)
-  const [userExistmsg, setUserExistmsg] = useState(false)
+  
 
   const inputRef = useRef(null);
 
@@ -30,6 +31,11 @@ const GitHubUser = () => {
       setUserData(null);
       setUserRepos([]);
     }
+    const livelinkResponse = await fetch(
+      `https://api.vercel.com/v9/projects/${username}/project`
+    )
+    const liveLink = await livelinkResponse.json();
+    setLiveLink(liveLink)
   };
 
 
@@ -65,32 +71,33 @@ const GitHubUser = () => {
         </form>
       </div>
 
-      <div className="flex justify-evenly gap-6 px-4">
-        <div className="h-[30vh] w-[35vw] border-[3px] border-[red] rounded-lg my-4">
+      <div className="flex justify-evenly gap-6 mx-6 px-6">
+        <div className="h-[30vh] w-[35vw] rounded-lg my-4 text-left text-[#a8a8a8]">
           {userData && (
             <div className="">
-              <h2>{userData.name}</h2>
-              <p>{userData.bio}</p>
-              <p>{userData.location}</p>
+            <h3 className="text-2xl font-bold">USER DETAILS</h3>
+              <h2>USERNAME: {userData.name}</h2>
+              <p>BIO: {userData.bio}</p>
+              <p>LOCATION: {userData.location}</p>
             </div>
           )}
         </div>
 
-        <div className="h-[69vh] w-[60vw] border-[3px] border-[blue] rounded-lg my-4 no-scrollbar overflow-y-auto">
+        <div className="h-[69vh] w-[60vw] rounded-lg my-4 overflow-y-auto no-scrollbar text-left text-[#a8a8a8]">
           {userRepos.length > 0 && (
             <div>
-              <h3>Repositories</h3>
+              <h3 className="text-2xl font-bold">PROJECTS</h3>
               <ul>
                 {userRepos.map((repo) => (
                   <li key={repo.id}>
                     <a
                       href={repo.html_url}
                       target="_blank"
-                      rel="noopener noreferrer"
+                     
                     >
-                      {repo.name}
+                     REPOSITORY: {repo.name}
                     </a>
-                    <p>{repo.description}</p>
+                    <p>DESCRIPTION: {repo.description}</p>
                   </li>
                 ))}
               </ul>
