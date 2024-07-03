@@ -6,7 +6,6 @@ const GitHubUser = () => {
   const [userRepos, setUserRepos] = useState([]);
   const [liveLink, setLiveLink] = useState([])
   const [fetchUsermsg, setFetchUsermsg] = useState(false)
-  
 
   const inputRef = useRef(null);
 
@@ -27,17 +26,12 @@ const GitHubUser = () => {
       const userRepos = await reposResponse.json();
       setUserRepos(userRepos);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      setError("Error fetching user data");
       setUserData(null);
       setUserRepos([]);
     }
-    const livelinkResponse = await fetch(
-      `https://api.vercel.com/v9/projects/${username}/project`
-    )
-    const liveLink = await livelinkResponse.json();
-    setLiveLink(liveLink)
-  };
 
+  };
 
   const sendFetchDataMsg = () => {
     if (username == "") {
@@ -46,7 +40,6 @@ const GitHubUser = () => {
       setFetchUsermsg(true);
     }
   };
-
 
   return (
     <div className=" text-[white] flex flex-col gap-6 text-center py-4">
@@ -93,10 +86,11 @@ const GitHubUser = () => {
                     <a
                       href={repo.html_url}
                       target="_blank"
-                     
+
                     >
                      REPOSITORY: {repo.name}
-                    </a>
+                    </a><br/>
+
                     <p>DESCRIPTION: {repo.description}</p>
                   </li>
                 ))}
@@ -110,3 +104,4 @@ const GitHubUser = () => {
 };
 
 export default GitHubUser;
+
